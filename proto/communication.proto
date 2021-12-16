@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+option go_package= "./proto";
+
+package proto;
+
+service Comms {
+
+    //front end to backend server
+
+    rpc SendAccountInfo (AccountInfo) returns (AccountResponse) {}
+
+    rpc SendPost (PostInfo) returns (PostReply) {}
+
+    rpc DoesAccountExist (AccountInfo) returns (AccountResponse) {}
+    
+}
+
+message AccountInfo {
+    string username =1;
+    string password =2;
+
+}
+
+message PostInfo {
+	string post =1;
+	string author =2;
+	string date =3;
+
+}
+
+
+message AccountResponse {
+	bool message =1;	
+}
+
+message PostReply {
+	bool message = 1;
+}
+
