@@ -1,18 +1,52 @@
-package webAppProject
+package servers
 
-import (
+import(
 	"context"
 	"log"
-	"os"
-	"time"
-	"proto"
+	"net"
+	"webAppProject/proto"
+	"google.golang.org/grpc"
 )
 
 const(
-address = "localhost:10021"
+	port = ":10021"
 )
 
 
-func main(){
 
+type accountInfo struct {
+	user string
+	pass string
 }
+
+var accounts = make([]accountInfo, 3)
+type serverobj struct {
+	proto.UnimplementedCommsServer
+}
+
+func (serv *serverobj) SendAccountInfo(ctx context.Context, req *proto.AccountInfo) (*proto.AccountResponse) {
+		log.Printf("Received RPC %v", req)
+		return &proto.AccountResponse{Message: true}
+}
+
+func (serv *serverobj) SendPost(ctx context.Context, req *proto.AccountInfo) ()
+
+
+func BackendRun(){
+	lis, err :=  net.Listen("tcp", port)
+	if err != nil {
+			log.Fatalf("Failure to listen: %v", err)
+	}
+	s:= grpc.NewServer()
+	servstruct := proto.UnimplementedCommsServer{} 
+	proto.RegisterCommsServer(s, servstruct)
+	log.Printf("server listening at %v", lis.Addr())
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
+
+	}
+
+
+
+
