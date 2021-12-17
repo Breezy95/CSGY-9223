@@ -31,18 +31,20 @@ func (serv *server) SendAccountInfo(ctx context.Context, req *proto.AccountInfo)
 		//accountsSlice = append(, *req)kkkkkkkk
 		newAcct := accountInfo{user: req.GetUsername(), pass: req.GetPassword()}
 		accountsSlice := append(accountsSlice, newAcct) 
-		log.Println(accountsSlice)
+		log.Printf("Contents of accounts array %v",accountsSlice)
 		return &proto.AccountResponse{Message: true},nil
 }
 
-/*func (serv *server) SendPost(ctx context.Context, req *proto.AccountInfo) (*proto.AccountResponse,nil) {
-	log.Printf("Received RPC %v", req.GetUsername())
 
-	return  &proto.AccountResponse{Message: true} , nil
+func (serv *server) SendPost(ctx context.Context, req *proto.PostInfo) (*proto.PostReply, error) {
+	log.Printf("Entering send post")
+	log.Printf(`Received RPC "%s" , "%s", "%s"`, req.GetPost(),req.GetAuthor(),req.GetDate())
+
+	return  &proto.PostReply{Message: true} , nil
 
 }
 
-*/
+
 
 
 func BackendRun(){
