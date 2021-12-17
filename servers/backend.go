@@ -19,17 +19,30 @@ type accountInfo struct {
 	pass string
 }
 
-var accounts = make([]accountInfo, 3)
-type serverobj struct {
+var accountsSlice = make([]accountInfo,0)
+
+type server struct {
 	proto.UnimplementedCommsServer
 }
 
-func (serv *serverobj) SendAccountInfo(ctx context.Context, req *proto.AccountInfo) (*proto.AccountResponse) {
+func (serv *server) SendAccountInfo(ctx context.Context, req *proto.AccountInfo) (*proto.AccountResponse,error) {
 		log.Printf("Received RPC %v", req)
-		return &proto.AccountResponse{Message: true}
+		//account := accountInfo{user: ,pass: }
+		//accountsSlice = append(, *req)kkkkkkkk
+		newAcct := accountInfo{user: req.GetUsername(), pass: req.GetPassword()}
+		accountsSlice := append(accountsSlice, newAcct) 
+		log.Println(accountsSlice)
+		return &proto.AccountResponse{Message: true},nil
 }
 
-func (serv *serverobj) SendPost(ctx context.Context, req *proto.AccountInfo) ()
+/*func (serv *server) SendPost(ctx context.Context, req *proto.AccountInfo) (*proto.AccountResponse,nil) {
+	log.Printf("Received RPC %v", req.GetUsername())
+
+	return  &proto.AccountResponse{Message: true} , nil
+
+}
+
+*/
 
 
 func BackendRun(){
@@ -38,8 +51,8 @@ func BackendRun(){
 			log.Fatalf("Failure to listen: %v", err)
 	}
 	s:= grpc.NewServer()
-	servstruct := proto.UnimplementedCommsServer{} 
-	proto.RegisterCommsServer(s, servstruct)
+	 
+	proto.RegisterCommsServer(s, &server{})
 	log.Printf("server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)

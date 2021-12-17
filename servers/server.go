@@ -32,8 +32,12 @@ func ClientRun() {
         ctx, cancel := context.WithTimeout(context.Background(), time.Second)
         defer cancel()
         r, err := c.SendAccountInfo(ctx, &proto.AccountInfo{Username: name, Password: defaultPassword})//&pb.HelloRequest{Name: name})
-        if err != nil {
+		//resp, err2 := c.SendPost(ctx, &proto.PostInfo{Post: "Test Post" ,Author: name, Date: "today"})
+        if err != nil   {
                 log.Fatalf("could not greet: %v", err)
         }
-        log.Printf("Greeting: %d", r.GetMessage())
+		//Prints response
+        log.Println( r.GetMessage())
+		//log.Println(resp.GetMessage())
+
 }
