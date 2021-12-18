@@ -3,6 +3,7 @@ package main
 
 import( "fmt"
 	"webAppProject/servers"
+	"html/template"
 	"context"
 	"log"
 	"os"
@@ -38,12 +39,14 @@ func main() {
         defer cancel()
         r, err := c.SendAccountInfo(ctx, &proto.AccountInfo{Username: name, Password: defaultPassword})//&pb.HelloRequest{Name: name})
 		resp, err2 := c.SendPost(ctx, &proto.PostInfo{Post: "Test Post" ,Author: name, Date: "today"})
-        if err != nil || err2 != nil {
+		r3, err3 := c.DoesAccountExist(ctx, &proto.AccountInfo{Username: name, Password: defaultPassword})
+        if err != nil || err2 != nil  || err3 != nil{
                 log.Fatalf("could not greet: %v", err)
         }
 		//Prints response
         log.Println( r.GetMessage())
 		log.Println(resp.GetMessage())
+		log.Println(r3.GetMessage())
 
 
 

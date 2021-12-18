@@ -1,6 +1,7 @@
 package servers
 
 import(
+	"errors"
 	"context"
 	"log"
 	"net"
@@ -41,6 +42,22 @@ func (serv *server) SendPost(ctx context.Context, req *proto.PostInfo) (*proto.P
 	log.Printf(`Received RPC "%s" , "%s", "%s"`, req.GetPost(),req.GetAuthor(),req.GetDate())
 
 	return  &proto.PostReply{Message: true} , nil
+
+}
+
+
+func (serv *server) DoesAccountExist(ctx context.Context, req *proto.AccountInfo) (*proto.AccountResponse, error) {
+	log.Print("Entering Does Acoount Exist")
+	log.Printf("Received RPC for account info")
+	for i,s := range accountsSlice {
+		log.Printf("iteration: %d",i)
+		if req.GetUsername() == s.user && req.GetPassword() == s.pass {
+			return &proto.AccountResponse{Message: true}, errors.New("Account Does not Exist")
+		}
+	}
+	return &proto.AccountResponse{Message: true},nil
+	
+
 
 }
 
