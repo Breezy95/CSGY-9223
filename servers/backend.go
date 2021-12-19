@@ -18,6 +18,9 @@ const(
 type accountInfo struct {
 	user string
 	pass string
+	posts []string
+	followedusers []string
+	
 }
 
 var accountsSlice = make([]accountInfo,0)
@@ -31,8 +34,10 @@ func (serv *server) SendAccountInfo(ctx context.Context, req *proto.AccountInfo)
 		//account := accountInfo{user: ,pass: }
 		//accountsSlice = append(, *req)kkkkkkkk
 		newAcct := accountInfo{user: req.GetUsername(), pass: req.GetPassword()}
-		accountsSlice := append(accountsSlice, newAcct) 
-		log.Printf("Contents of accounts array %v",accountsSlice)
+		//accountsSlice := append(accountsSlice, newAcct) 
+		log.Printf("Contents of account  %v", newAcct)
+		log.Printf("Contents of account array  %v", accountsSlice)
+		
 		return &proto.AccountResponse{Message: true},nil
 }
 
@@ -49,19 +54,34 @@ func (serv *server) SendPost(ctx context.Context, req *proto.PostInfo) (*proto.P
 func (serv *server) DoesAccountExist(ctx context.Context, req *proto.AccountInfo) (*proto.AccountResponse, error) {
 	log.Print("Entering Does Acoount Exist")
 	log.Printf("Received RPC for account info")
-	for i,s := range accountsSlice {
-		log.Printf("iteration: %d",i)
-		if req.GetUsername() == s.user && req.GetPassword() == s.pass {
-			return &proto.AccountResponse{Message: true}, errors.New("Account Does not Exist")
-		}
+	ans, err := AccountVerify(req)
+	log.Printf("Does this account with password: %s exist: %t", req.GetPassword(), ans)
+	if err != nil{
+		return &proto.AccountResponse{Message: ans}, errors.New("Account Does Not Exist")
 	}
-	return &proto.AccountResponse{Message: true},nil
-	
-
+	return &proto.AccountResponse{Message: ans}, nil
 
 }
 
+func AccountVerify(req *proto.AccountInfo) (bool,error) {
+	for _,s := range accountsSlice {
+		log.Print(s)
+		if req.GetUsername() == s.user && req.GetPassword() == s.pass {
+			return true, nil
+		}
+	}
+	return false, errors.New("Account Exists Already")
+}
 
+func RegisterAccount(ctx context.Context, req *proto.AccountInfo) (*proto.AccountResponse, error) {
+	log.Print("Entering account verification method")
+	
+	ans ,err := AccountVerify(req)
+	if err != nil{
+		return &proto.AccountResponse{Message: ans}, errors.New("Account Does Not Exist")
+	}
+	return &proto.AccountResponse{Message: ans}, nil
+} 
 
 
 func BackendRun(){

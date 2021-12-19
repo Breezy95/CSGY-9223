@@ -11,7 +11,9 @@ import( "fmt"
 	"os"
 	"time"
 	"webAppProject/proto"
-	"google.golang.org/grpc")
+	"google.golang.org/grpc"
+	//"github.com/bradrydzewski/go.auth"
+)
 
 	type accountInfo struct {
 		user string
@@ -80,22 +82,32 @@ func login(w http.ResponseWriter, r *http.Request) {
 		t,_ := template.ParseFiles("pages/login.gtpl")
 		t.Execute(w, nil)
 	} else{
+
 		r.ParseForm()
 		log.Printf("username submitted: %s \npassword submitted: %s", r.FormValue("username"),r.FormValue("password"))
-		var conn, err = grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
+		var conn, _ = grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 		var c =  proto.NewCommsClient(conn)
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 		defer cancel()
-		responseRPC,err := c.SendAccountInfo(ctx,&proto.AccountInfo{Username: r.FormValue("username"), Password: r.FormValue("password") })
-
-		if err != nil {
-			log.Fatalf("Could not send RPC in login")
+		responseRPC,rpcerror := c.SendAccountInfo(ctx,&proto.AccountInfo{Username: r.FormValue("username"), Password: r.FormValue("password") })
+		resp2, rpcerr2 := c.DoesAccountExist(ctx, &proto.AccountInfo{Username: r.FormValue("username"), Password: r.FormValue("password") })
+		if rpcerr2 != nil{
+			log.Println("Account does not exist")
+			log.Println(resp2.GetMessage())
+			fmt.Fprintf(w,rpcerr2.Error())
 		}
+		if rpcerror != nil {
+			fmt.Fprintf(w, rpcerror.Error())
+		}
+		
 		log.Println("Successful message")
 		log.Println(responseRPC.GetMessage())
 	}
 }
 
+//func accountexistence(user string, pass string)
+
+//need to add authentication token
 	
 
 

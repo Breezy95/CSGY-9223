@@ -255,7 +255,7 @@ var file_communication_proto_rawDesc = []byte{
 	0x01, 0x28, 0x08, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x25, 0x0a, 0x09,
 	0x50, 0x6f, 0x73, 0x74, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73,
 	0x73, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73,
-	0x61, 0x67, 0x65, 0x32, 0xfb, 0x01, 0x0a, 0x05, 0x43, 0x6f, 0x6d, 0x6d, 0x73, 0x12, 0x3f, 0x0a,
+	0x61, 0x67, 0x65, 0x32, 0xbc, 0x02, 0x0a, 0x05, 0x43, 0x6f, 0x6d, 0x6d, 0x73, 0x12, 0x3f, 0x0a,
 	0x0f, 0x53, 0x65, 0x6e, 0x64, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x49, 0x6e, 0x66, 0x6f,
 	0x12, 0x12, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74,
 	0x49, 0x6e, 0x66, 0x6f, 0x1a, 0x16, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x41, 0x63, 0x63,
@@ -271,8 +271,12 @@ var file_communication_proto_rawDesc = []byte{
 	0x6f, 0x72, 0x64, 0x12, 0x12, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x41, 0x63, 0x63, 0x6f,
 	0x75, 0x6e, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x1a, 0x16, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e,
 	0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
-	0x00, 0x42, 0x09, 0x5a, 0x07, 0x2e, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x33,
+	0x00, 0x12, 0x3f, 0x0a, 0x0f, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x41, 0x63, 0x63,
+	0x6f, 0x75, 0x6e, 0x74, 0x12, 0x12, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x41, 0x63, 0x63,
+	0x6f, 0x75, 0x6e, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x1a, 0x16, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x2e, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x22, 0x00, 0x42, 0x09, 0x5a, 0x07, 0x2e, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -299,12 +303,14 @@ var file_communication_proto_depIdxs = []int32{
 	1, // 1: proto.Comms.SendPost:input_type -> proto.PostInfo
 	0, // 2: proto.Comms.DoesAccountExist:input_type -> proto.AccountInfo
 	0, // 3: proto.Comms.ChangePassword:input_type -> proto.AccountInfo
-	2, // 4: proto.Comms.SendAccountInfo:output_type -> proto.AccountResponse
-	3, // 5: proto.Comms.SendPost:output_type -> proto.PostReply
-	2, // 6: proto.Comms.DoesAccountExist:output_type -> proto.AccountResponse
-	2, // 7: proto.Comms.ChangePassword:output_type -> proto.AccountResponse
-	4, // [4:8] is the sub-list for method output_type
-	0, // [0:4] is the sub-list for method input_type
+	0, // 4: proto.Comms.RegisterAccount:input_type -> proto.AccountInfo
+	2, // 5: proto.Comms.SendAccountInfo:output_type -> proto.AccountResponse
+	3, // 6: proto.Comms.SendPost:output_type -> proto.PostReply
+	2, // 7: proto.Comms.DoesAccountExist:output_type -> proto.AccountResponse
+	2, // 8: proto.Comms.ChangePassword:output_type -> proto.AccountResponse
+	2, // 9: proto.Comms.RegisterAccount:output_type -> proto.AccountResponse
+	5, // [5:10] is the sub-list for method output_type
+	0, // [0:5] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -401,6 +407,7 @@ type CommsClient interface {
 	SendPost(ctx context.Context, in *PostInfo, opts ...grpc.CallOption) (*PostReply, error)
 	DoesAccountExist(ctx context.Context, in *AccountInfo, opts ...grpc.CallOption) (*AccountResponse, error)
 	ChangePassword(ctx context.Context, in *AccountInfo, opts ...grpc.CallOption) (*AccountResponse, error)
+	RegisterAccount(ctx context.Context, in *AccountInfo, opts ...grpc.CallOption) (*AccountResponse, error)
 }
 
 type commsClient struct {
@@ -447,12 +454,22 @@ func (c *commsClient) ChangePassword(ctx context.Context, in *AccountInfo, opts 
 	return out, nil
 }
 
+func (c *commsClient) RegisterAccount(ctx context.Context, in *AccountInfo, opts ...grpc.CallOption) (*AccountResponse, error) {
+	out := new(AccountResponse)
+	err := c.cc.Invoke(ctx, "/proto.Comms/RegisterAccount", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CommsServer is the server API for Comms service.
 type CommsServer interface {
 	SendAccountInfo(context.Context, *AccountInfo) (*AccountResponse, error)
 	SendPost(context.Context, *PostInfo) (*PostReply, error)
 	DoesAccountExist(context.Context, *AccountInfo) (*AccountResponse, error)
 	ChangePassword(context.Context, *AccountInfo) (*AccountResponse, error)
+	RegisterAccount(context.Context, *AccountInfo) (*AccountResponse, error)
 }
 
 // UnimplementedCommsServer can be embedded to have forward compatible implementations.
@@ -470,6 +487,9 @@ func (*UnimplementedCommsServer) DoesAccountExist(context.Context, *AccountInfo)
 }
 func (*UnimplementedCommsServer) ChangePassword(context.Context, *AccountInfo) (*AccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangePassword not implemented")
+}
+func (*UnimplementedCommsServer) RegisterAccount(context.Context, *AccountInfo) (*AccountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegisterAccount not implemented")
 }
 
 func RegisterCommsServer(s *grpc.Server, srv CommsServer) {
@@ -548,6 +568,24 @@ func _Comms_ChangePassword_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Comms_RegisterAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AccountInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommsServer).RegisterAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Comms/RegisterAccount",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommsServer).RegisterAccount(ctx, req.(*AccountInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Comms_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "proto.Comms",
 	HandlerType: (*CommsServer)(nil),
@@ -567,6 +605,10 @@ var _Comms_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ChangePassword",
 			Handler:    _Comms_ChangePassword_Handler,
+		},
+		{
+			MethodName: "RegisterAccount",
+			Handler:    _Comms_RegisterAccount_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

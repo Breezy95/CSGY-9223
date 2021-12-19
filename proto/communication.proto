@@ -15,6 +15,9 @@ service Comms {
     rpc DoesAccountExist (AccountInfo) returns (AccountResponse) {}
     
     rpc ChangePassword (AccountInfo) returns (AccountResponse) {}
+
+    rpc RegisterAccount (AccountInfo) returns (AccountResponse) {}
+    
     
 }
 
