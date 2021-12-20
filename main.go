@@ -75,7 +75,6 @@ func mainPage(w http.ResponseWriter, r *http.Request){
 
 
 func register(w http.ResponseWriter, r *http.Request) {
-	total:= 3
 	if r.Method == "GET"{
 		t, _ := template.ParseFiles("pages/registration.gtpl")
 		t.Execute(w, nil)
