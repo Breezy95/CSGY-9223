@@ -5,6 +5,7 @@ go 1.17
 require (
 	github.com/bradrydzewski/go.auth v0.0.0-20130828171325-d0051b5cc538 // indirect
 	github.com/dchest/authcookie v0.0.0-20190824115100-f900d2294c8e // indirect
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	golang.org/x/net v0.0.0-20211216030914-fe4d6282115f // indirect
 	golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e // indirect

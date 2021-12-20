@@ -73,14 +73,17 @@ func AccountVerify(req *proto.AccountInfo) (bool,error) {
 	return false, errors.New("Account Exists Already")
 }
 
-func RegisterAccount(ctx context.Context, req *proto.AccountInfo) (*proto.AccountResponse, error) {
+func (serv *server) RegisterAccount(ctx context.Context, req *proto.AccountInfo) (*proto.AccountResponse, error) {
 	log.Print("Entering account verification method")
 	
 	ans ,err := AccountVerify(req)
 	if err != nil{
-		return &proto.AccountResponse{Message: ans}, errors.New("Account Does Not Exist")
+	tmp := accountInfo{req.GetUsername(), req.GetPassword(), nil, nil}
+	accountsSlice = append(accountsSlice, tmp)
+	return &proto.AccountResponse{Message: ans}, nil	
 	}
-	return &proto.AccountResponse{Message: ans}, nil
+	
+	return &proto.AccountResponse{Message: ans}, errors.New("Account Does Not Exist")
 } 
 
 

@@ -1,17 +1,21 @@
 package main
 
 
-import( "fmt"
+import( 
+	_ "embed"
+	"fmt"
 	"webAppProject/servers"
 	"html/template"
 	"net/http"
-	"strings"
+	//"strings"
 	"context"
 	"log"
 	"os"
 	"time"
 	"webAppProject/proto"
 	"google.golang.org/grpc"
+	_ "github.com/dgrijalva/jwt-go"
+
 	//"github.com/bradrydzewski/go.auth"
 )
 
@@ -62,17 +66,41 @@ func runServers() {
 
 }
 
-func sayhelloName(w http.ResponseWriter, r *http.Request) {
-    r.ParseForm()  // parse arguments, you have to call this by yourself
-    fmt.Println(r.Form)  // print form information in server side
-    fmt.Println("path", r.URL.Path)
-    fmt.Println("scheme", r.URL.Scheme)
-    fmt.Println(r.Form["url_long"])
-    for k, v := range r.Form {
-        fmt.Println("key:", k)
-        fmt.Println("val:", strings.Join(v, ""))
-    }
-    fmt.Fprintf(w, "AAAAAAAAAAAAAAAAAAAAVVVVVVVVVVVVVVVVVVVVVVVVXXXXXXXXXXXXXXXXXXXXXXXXXXXX") // send data to client side
+
+func mainPage(w http.ResponseWriter, r *http.Request){
+	
+	t,_ := template.ParseFiles("pages/home.gtpl")
+	t.Execute(w, nil)
+}
+
+
+func register(w http.ResponseWriter, r *http.Request) {
+	total:= 3
+	if r.Method == "GET"{
+		t, _ := template.ParseFiles("pages/registration.gtpl")
+		t.Execute(w, nil)
+	} else {
+		r.ParseForm()
+		var conn, _ = grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
+		var c =  proto.NewCommsClient(conn)
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+		resp, err :=c.RegisterAccount(ctx,&proto.AccountInfo{Username: r.FormValue("username"), Password: r.FormValue("password") })
+		if err != nil{
+			log.Println(err)
+			time.Sleep(4)
+			http.Redirect(w, r, "/login", 301)
+		}
+
+		if resp.GetMessage() == true{
+			http.Redirect(w, r, "/login", 303)
+		} else {
+			http.Redirect(w, r, "/registration", 303)
+		}
+
+
+	}
+
 }
 
 
@@ -88,19 +116,24 @@ func login(w http.ResponseWriter, r *http.Request) {
 		var conn, _ = grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 		var c =  proto.NewCommsClient(conn)
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		log.Printf("after rpc creation")
 		defer cancel()
+		//reorder two methods below
 		responseRPC,rpcerror := c.SendAccountInfo(ctx,&proto.AccountInfo{Username: r.FormValue("username"), Password: r.FormValue("password") })
 		resp2, rpcerr2 := c.DoesAccountExist(ctx, &proto.AccountInfo{Username: r.FormValue("username"), Password: r.FormValue("password") })
 		if rpcerr2 != nil{
 			log.Println("Account does not exist")
 			log.Println(resp2.GetMessage())
 			fmt.Fprintf(w,rpcerr2.Error())
+			http.Redirect(w, r, "/login", 301)
 		}
 		if rpcerror != nil {
+			http.Redirect(w, r, "/login", 301)
 			fmt.Fprintf(w, rpcerror.Error())
+			
 		}
 		
-		log.Println("Successful message")
+		//log.Println("Successful message")
 		log.Println(responseRPC.GetMessage())
 	}
 }
@@ -114,9 +147,11 @@ func login(w http.ResponseWriter, r *http.Request) {
 func main() {
 	fmt.Println("Starting from project")
 	go runServers()
+	 
 	
-	
-	http.HandleFunc("/",sayhelloName)
+	//shttp.HandleFunc("/test", )
+	http.HandleFunc("/register",register)
+	http.HandleFunc("/",mainPage)
 	http.HandleFunc("/login", login)
 	err:= http.ListenAndServe(":9090",nil)
 	if err != nil {
